@@ -27,7 +27,6 @@ _write:
   mov rax, 1
   mov rdi, 1
   lea rsi, buffer
-  sub rbx, 4 ; 実行しているプログラムのパスを除くためにとりあえず表示文字数を減らす
   mov rdx, rbx
   syscall
   ret
