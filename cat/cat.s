@@ -1,5 +1,6 @@
 section .data
     newline db 0xA
+    err_msg db 'Error opening file', 0xA
 
 section .bss
     buffer resb 4096
@@ -10,6 +11,8 @@ section .text
 _start:
     mov rdi, [rsp + 16]
     call _open
+    cmp rax, 0
+    js _open_error
     mov rbx, rax ; Save file descriptor in rbx
     jmp read_loop
 
@@ -65,3 +68,16 @@ end_read:
     ; call _write_EOL
     call _close
     jmp _exit
+
+_open_error:
+  mov rsi, err_msg
+  mov rdi, 1
+  mov rdx, 19
+  mov eax, 1 ; sys_write
+  syscall
+  jmp _exit_error
+
+_exit_error:
+  mov eax, 60 ; sys_exit
+  mov rdi, 1
+  syscall
