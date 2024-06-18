@@ -1,5 +1,4 @@
 section .data
-    newline db 0xA
     err_msg db 'Error opening file', 0xA
 
 section .bss
@@ -37,14 +36,6 @@ _write:
     syscall
     ret
 
-_write_EOL:
-    mov eax, 1
-    mov rdi, 1
-    mov rsi, newline
-    mov rdx, 1
-    syscall 
-    ret
-
 _close:
     mov eax, 3 ; sys_close
     mov rdi, rbx ; 
@@ -65,7 +56,6 @@ read_loop:
     jmp read_loop
 
 end_read:
-    ; call _write_EOL
     call _close
     jmp _exit
 
