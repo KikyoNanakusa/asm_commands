@@ -3,7 +3,6 @@ section .data
 	; $は命令実行時のアドレスを示す
 	; $ - arg_err_megは事実上arg_err_msgの長さとなる
 	arg_err_msg_len equ $ - arg_err_msg             ; エラーメッセージの長さ
-	mode dq 0o755
 
 section .text
 	global _start
@@ -14,14 +13,15 @@ _start:
 	call _mkdir
 	call _exit
 
+; argcが2であるかどうかをtest
 _check_argc:
-	mov rsi, rsp
+	mov rsi, [rsp+8]
 	cmp rsi, 2
 	jne _arg_error
 
 _mkdir:
 	mov rax, 83
-	mov rsi, mode
+	mov rsi, 755o
 	syscall
 	ret
 
