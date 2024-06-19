@@ -1,6 +1,6 @@
 section .data
-	flags dq 0101h ; O_WRONLY | O_CREAT
-	mode dq 0644 ; permission
+	flags dq 0x41 ; O_WRONLY | O_CREAT
+	mode dq 0o666 ; permission
 	usage db "Usage: touch <file>", 0xA, 0x00
 	usage_len equ $ - usage
 
@@ -33,8 +33,8 @@ _print_usage:
 
 _touch:
 	mov rax, 0x2
-	mov rsi, flags
-	mov rdx, mode
+	mov rsi, [rel flags]
+	mov rdx, [rel mode]
 	syscall
 
 	; error handling
