@@ -14,6 +14,8 @@ _start:
 	call _exit
 
 _check_argc:
+	; call命令を挟むためスタック上でのargcの位置がずれる
+	; 具体的にはリターンポインタ分の8バイト分
 	mov rsi, [rsp+8]
 	cmp rsi, 2
 	jne _print_usage
